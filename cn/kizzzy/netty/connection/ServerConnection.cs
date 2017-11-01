@@ -27,7 +27,7 @@ namespace cn.kizzzy.netty.connection
             }
         }
 
-        public void Send(PacketMessage msg)
+        public void Send<T>(T msg) where T : IMessage
         {
             channel.WriteAndFlushAsync(msg);
         }

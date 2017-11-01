@@ -8,22 +8,17 @@ namespace cn.kizzzy.notify
 
         public bool AddListener(int notifyType, INotifyListener listener)
         {
-            List<INotifyListener> listeners = allListeners[notifyType];
-            if (listeners == null)
-            {
-                listeners = new List<INotifyListener>();
-                allListeners[notifyType] = listeners;
-            }
-            listeners.Add(listener);
+            if (!allListeners.ContainsKey(notifyType))
+                allListeners[notifyType] = new List<INotifyListener>();
+            allListeners[notifyType].Add(listener);
             return true;
         }
 
         public bool RemoveListener(int notifyType, INotifyListener listener)
         {
-            List<INotifyListener> listeners = allListeners[notifyType];
-            if (listeners == null)
+            if (!allListeners.ContainsKey(notifyType))
                 return false;
-            return listeners.Remove(listener);
+            return allListeners[notifyType].Remove(listener);
         }
 
         public bool NotifyListener(NotifyArgs arg)
@@ -31,11 +26,10 @@ namespace cn.kizzzy.notify
             if (arg == null)
                 return false;
 
-            List<INotifyListener> listeners = allListeners[arg.NotifyType];
-            if (listeners == null)
+            if (!allListeners.ContainsKey(arg.NotifyType))
                 return false;
 
-            foreach (INotifyListener listener in listeners)
+            foreach (INotifyListener listener in allListeners[arg.NotifyType])
                 listener.OnNotify(arg);
             return true;
         }
@@ -44,11 +38,10 @@ namespace cn.kizzzy.notify
         {
             NotifyArgs arg = new NotifyArgs(this, notifyType, notifyParams);
 
-            List<INotifyListener> listeners = allListeners[arg.NotifyType];
-            if (listeners == null)
+            if (!allListeners.ContainsKey(arg.NotifyType))
                 return false;
 
-            foreach (INotifyListener listener in listeners)
+            foreach (INotifyListener listener in allListeners[arg.NotifyType])
                 listener.OnNotify(arg);
             return true;
         }
@@ -57,11 +50,10 @@ namespace cn.kizzzy.notify
         {
             NotifyArgs arg = new NotifyArgs(this, notifyType, null);
 
-            List<INotifyListener> listeners = allListeners[arg.NotifyType];
-            if (listeners == null)
+            if (!allListeners.ContainsKey(arg.NotifyType))
                 return false;
 
-            foreach (INotifyListener listener in listeners)
+            foreach (INotifyListener listener in allListeners[arg.NotifyType])
                 listener.OnNotify(arg);
             return true;
         }
