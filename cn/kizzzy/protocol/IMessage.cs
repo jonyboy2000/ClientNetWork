@@ -4,9 +4,9 @@ namespace cn.kizzzy.protocol
 {
     public interface IMessage
     {
-        IByteBuffer ToByteBuf(IMessage msg);
+        short HEADER_SIZE { get; }
 
-        IMessage ValueOf(IByteBuffer buf);
+        short HEADER { get; }
 
         short CmdType { get; set; }
 

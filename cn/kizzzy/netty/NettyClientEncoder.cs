@@ -2,7 +2,6 @@
 using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
-using System;
 
 namespace cn.kizzzy.netty
 {
@@ -10,10 +9,7 @@ namespace cn.kizzzy.netty
     {
         protected override void Encode(IChannelHandlerContext context, T message, IByteBuffer output)
         {
-            //output.WriteBytes(PacketMessage.ToByteBuf(message));
-            Type type = Type.GetType(typeof(T).FullName);
-            T msg = (T)Activator.CreateInstance(type);
-            output.WriteBytes(msg.ToByteBuf(message));
+            output.WriteBytes(ProtocolUtil.MessageToByteBuf(message));
         }
     }
 }
